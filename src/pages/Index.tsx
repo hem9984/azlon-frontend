@@ -5,7 +5,7 @@ import WorkflowForm from '@/components/WorkflowForm';
 import ResultDisplay from '@/components/ResultDisplay';
 import FileExplorer from '@/components/FileExplorer';
 
-const API_URL = "/api";
+const API_URL = "https://anthonylamelas.tail9dec88.ts.net:8443";
 
 const Index = () => {
   const [userPrompt, setUserPrompt] = useState("");
