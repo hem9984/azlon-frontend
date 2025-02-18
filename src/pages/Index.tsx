@@ -5,7 +5,7 @@ import WorkflowForm from '@/components/WorkflowForm';
 import ResultDisplay from '@/components/ResultDisplay';
 import FileExplorer from '@/components/FileExplorer';
 
-const API_URL = "http://localhost:8000";
+const API_URL = "/api";
 
 const Index = () => {
   const [userPrompt, setUserPrompt] = useState("");
