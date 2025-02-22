@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
@@ -164,7 +165,7 @@ const Index = () => {
           <ResizablePanel defaultSize={40}>
             <div className="space-y-4 h-full">
               {/* Prompt Section */}
-              <div className="bg-[#FFDEE2] rounded-lg p-4">
+              <div className="bg-[#FFDEE2] rounded-lg p-4 min-h-[200px]">
                 <h2 className="text-[#0D4B6B] font-bold mb-4">PROMPT</h2>
                 <textarea
                   value={prompt}
@@ -173,7 +174,7 @@ const Index = () => {
                 />
                 <Button 
                   variant="secondary" 
-                  className="w-full bg-[#0D4B6B] text-white hover:bg-[#0D5B7B]"
+                  className="w-full bg-[#0D4B6B] text-white hover:bg-[#0D5B7B] mt-4"
                   onClick={handleSend}
                 >
                   <Send className="mr-2 h-4 w-4" />
@@ -181,49 +182,51 @@ const Index = () => {
                 </Button>
               </div>
 
-              {/* Test Conditions (only visible in Advanced Mode) */}
-              {mode === "ADVANCED MODE" && (
-                <div className="bg-[#FFDEE2] rounded-lg p-4">
-                  <h2 className="text-[#0D4B6B] font-bold mb-4">TEST CONDITIONS</h2>
-                  <textarea
-                    value={testConditions}
-                    onChange={(e) => setTestConditions(e.target.value)}
-                    className="w-full h-32 bg-transparent text-[#0D4B6B] resize-none focus:outline-none"
-                  />
-                </div>
-              )}
+              <div className="min-h-[200px]">
+                {/* Test Conditions (only visible in Advanced Mode) */}
+                {mode === "ADVANCED MODE" && (
+                  <div className="bg-[#FFDEE2] rounded-lg p-4 h-full">
+                    <h2 className="text-[#0D4B6B] font-bold mb-4">TEST CONDITIONS</h2>
+                    <textarea
+                      value={testConditions}
+                      onChange={(e) => setTestConditions(e.target.value)}
+                      className="w-full h-32 bg-transparent text-[#0D4B6B] resize-none focus:outline-none"
+                    />
+                  </div>
+                )}
 
-              {/* Progress Circle (only visible in Default Mode) */}
-              {mode === "DEFAULT MODE" && (
-                <div className="flex justify-center">
-                  <div className="relative w-24 h-24">
-                    <svg className="w-24 h-24 transform -rotate-90">
-                      <circle
-                        cx="48"
-                        cy="48"
-                        r="36"
-                        stroke="#0D4B6B"
-                        strokeWidth="8"
-                        fill="transparent"
-                        className="opacity-25"
-                      />
-                      <circle
-                        cx="48"
-                        cy="48"
-                        r="36"
-                        stroke="#4CAF50"
-                        strokeWidth="8"
-                        fill="transparent"
-                        strokeDasharray={`${2 * Math.PI * 36}`}
-                        strokeDashoffset={`${2 * Math.PI * 36 * (1 - (activeProject === 1 ? progress1 : progress2) / 100)}`}
-                      />
-                    </svg>
-                    <div className="absolute inset-0 flex items-center justify-center text-[#0D4B6B] font-bold text-xl">
-                      {activeProject === 1 ? progress1 : progress2}%
+                {/* Progress Circle (only visible in Default Mode) */}
+                {mode === "DEFAULT MODE" && (
+                  <div className="bg-[#FFDEE2] rounded-lg p-4 h-full flex flex-col items-center justify-center">
+                    <div className="relative w-24 h-24">
+                      <svg className="w-24 h-24 transform -rotate-90">
+                        <circle
+                          cx="48"
+                          cy="48"
+                          r="36"
+                          stroke="#0D4B6B"
+                          strokeWidth="8"
+                          fill="transparent"
+                          className="opacity-25"
+                        />
+                        <circle
+                          cx="48"
+                          cy="48"
+                          r="36"
+                          stroke="#4CAF50"
+                          strokeWidth="8"
+                          fill="transparent"
+                          strokeDasharray={`${2 * Math.PI * 36}`}
+                          strokeDashoffset={`${2 * Math.PI * 36 * (1 - (activeProject === 1 ? progress1 : progress2) / 100)}`}
+                        />
+                      </svg>
+                      <div className="absolute inset-0 flex items-center justify-center text-[#0D4B6B] font-bold text-xl">
+                        {activeProject === 1 ? progress1 : progress2}%
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
 
               {/* Human in the Loop Button (only visible in Advanced Mode) */}
               {mode === "ADVANCED MODE" && (
