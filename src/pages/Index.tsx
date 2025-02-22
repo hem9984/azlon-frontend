@@ -26,8 +26,6 @@ const Index = () => {
   ]);
   const { toast } = useToast();
   const navigate = useNavigate();
-  const [selectedFile, setSelectedFile] = useState<string | null>(null);
-  const [showFileContent, setShowFileContent] = useState(false);
   const [selectedInputFile, setSelectedInputFile] = useState<string | null>(null);
   const [selectedOutputFile, setSelectedOutputFile] = useState<string | null>(null);
 
@@ -99,11 +97,6 @@ const Index = () => {
 
   const handleHumanInTheLoop = () => {
     navigate('/hil');
-  };
-
-  const handleFileClick = (filename: string) => {
-    setSelectedFile(filename);
-    setShowFileContent(true);
   };
 
   const FileComponent = ({ filename, isOutput = false }: { filename: string; isOutput?: boolean }) => (
@@ -380,26 +373,6 @@ const Index = () => {
           </ResizablePanel>
         </ResizablePanelGroup>
       </div>
-
-      <Dialog open={showFileContent} onOpenChange={setShowFileContent}>
-        <DialogContent className="bg-white text-black max-w-2xl max-h-[80vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="flex justify-between items-center">
-              <span>{selectedFile}</span>
-              <Button
-                variant="ghost"
-                className="h-8 w-8 p-0"
-                onClick={() => setShowFileContent(false)}
-              >
-                <X className="h-4 w-4 text-[#ea384c]" />
-              </Button>
-            </DialogTitle>
-          </DialogHeader>
-          <pre className="whitespace-pre-wrap p-4 bg-white">
-            {selectedFile ? fileContents[selectedFile] : ''}
-          </pre>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };
