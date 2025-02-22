@@ -120,6 +120,9 @@ const Index = () => {
                 className="transition-all duration-500"
               />
             </svg>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span className="text-[8px] font-bold">{Math.round(progress)}%</span>
+            </div>
           </div>
         </div>
       </Button>
