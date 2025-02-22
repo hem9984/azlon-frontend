@@ -89,14 +89,14 @@ const Index = () => {
       <Button 
         variant="secondary"
         className={`
-          relative bg-[#0D4B6B] text-white border-2 border-white hover:bg-[#0D5B7B] pr-[4.5rem]
+          relative bg-[#0D4B6B] text-white border-2 border-white hover:bg-[#0D5B7B] pr-[4.5rem] pb-16
           ${isActive ? 'border-b-0' : ''}
           ${isProcessing && isActive ? 'cursor-wait' : ''}
         `}
         disabled={isProcessing && isActive}
       >
         {`PROJECT_${number}_NAME`}
-        <div className="absolute right-1 top-1/2 -translate-y-1/2">
+        <div className="absolute right-1 bottom-1">
           <div className="relative w-14 h-14">
             <svg className="w-14 h-14 transform -rotate-90">
               <circle
@@ -105,7 +105,7 @@ const Index = () => {
                 r="24"
                 stroke="#FFFFFF"
                 strokeWidth="2"
-                fill="#FA8072"
+                fill="#FFDEE2"
                 className="opacity-100"
               />
               <circle
@@ -121,7 +121,7 @@ const Index = () => {
               />
             </svg>
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-lg font-bold text-white">{Math.floor(progress)}%</span>
+              <span className="text-lg font-bold text-[#0D4B6B]">{Math.floor(progress)}%</span>
             </div>
           </div>
         </div>
@@ -237,29 +237,29 @@ const Index = () => {
               {/* Progress Circle (only visible in Default Mode) */}
               {mode === "DEFAULT MODE" && (
                 <div className="flex justify-center">
-                  <div className="relative w-32 h-32">
-                    <svg className="w-32 h-32 transform -rotate-90">
+                  <div className="relative w-48 h-48">
+                    <svg className="w-48 h-48 transform -rotate-90">
                       <circle
-                        cx="64"
-                        cy="64"
-                        r="56"
+                        cx="96"
+                        cy="96"
+                        r="88"
                         stroke="#0D4B6B"
                         strokeWidth="4"
-                        fill="#FA8072"
+                        fill="#FFDEE2"
                         className="opacity-100"
                       />
                       <circle
-                        cx="64"
-                        cy="64"
-                        r="56"
+                        cx="96"
+                        cy="96"
+                        r="88"
                         stroke="#4CAF50"
                         strokeWidth="4"
                         fill="transparent"
-                        strokeDasharray={`${2 * Math.PI * 56}`}
-                        strokeDashoffset={`${2 * Math.PI * 56 * (1 - (activeProject === 1 ? progress1 : progress2) / 100)}`}
+                        strokeDasharray={`${2 * Math.PI * 88}`}
+                        strokeDashoffset={`${2 * Math.PI * 88 * (1 - (activeProject === 1 ? progress1 : progress2) / 100)}`}
                       />
                     </svg>
-                    <div className="absolute inset-0 flex items-center justify-center text-white font-bold text-3xl">
+                    <div className="absolute inset-0 flex items-center justify-center text-[#0D4B6B] font-bold text-4xl">
                       {Math.floor(activeProject === 1 ? progress1 : progress2)}%
                     </div>
                   </div>
