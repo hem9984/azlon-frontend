@@ -89,14 +89,14 @@ const Index = () => {
       <Button 
         variant="secondary"
         className={`
-          relative bg-[#0D4B6B] text-white border-2 border-white hover:bg-[#0D5B7B] pr-[4.5rem] pb-16
+          relative bg-[#0D4B6B] text-white border-2 border-white hover:bg-[#0D5B7B] h-16
           ${isActive ? 'border-b-0' : ''}
           ${isProcessing && isActive ? 'cursor-wait' : ''}
         `}
         disabled={isProcessing && isActive}
       >
-        {`PROJECT_${number}_NAME`}
-        <div className="absolute right-1 bottom-1">
+        <span className="mr-16">{`PROJECT_${number}_NAME`}</span>
+        <div className="absolute right-1 top-1/2 -translate-y-1/2">
           <div className="relative w-14 h-14">
             <svg className="w-14 h-14 transform -rotate-90">
               <circle
