@@ -129,7 +129,7 @@ const Index = () => {
         {/* Main Content */}
         <ResizablePanelGroup 
           direction="horizontal" 
-          className="flex-grow mt-4"
+          className="flex-grow mt-4 gap-4"
         >
           {/* Input Section */}
           <ResizablePanel defaultSize={30}>
@@ -158,7 +158,7 @@ const Index = () => {
             </div>
           </ResizablePanel>
 
-          <ResizableHandle withHandle />
+          <ResizableHandle withHandle className="bg-transparent" />
 
           {/* Middle Section */}
           <ResizablePanel defaultSize={40}>
@@ -238,7 +238,7 @@ const Index = () => {
             </div>
           </ResizablePanel>
 
-          <ResizableHandle withHandle />
+          <ResizableHandle withHandle className="bg-transparent" />
 
           {/* Output Section */}
           <ResizablePanel defaultSize={30}>
