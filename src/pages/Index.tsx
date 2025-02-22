@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Upload, Download, Send } from "lucide-react";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
+import { useNavigate } from 'react-router-dom';
 
 const Index = () => {
   const [activeProject, setActiveProject] = useState(1);
@@ -22,6 +23,7 @@ const Index = () => {
     "plot.pdf"
   ]);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     // Handle file upload
@@ -48,10 +50,7 @@ const Index = () => {
   };
 
   const handleHumanInTheLoop = () => {
-    toast({
-      title: "Human In The Loop",
-      description: "Processing with human oversight...",
-    });
+    navigate('/human-in-loop');
   };
 
   const ProjectTab = ({ number, progress, isActive }: { number: number; progress: number; isActive: boolean }) => (
