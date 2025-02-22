@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -11,8 +12,9 @@ const Index = () => {
   const [mode, setMode] = useState("DEFAULT MODE");
   const [prompt, setPrompt] = useState("Fit different models to the data in file1.csv, perform cross-validation, print MSE for all models, plot the distribution of data.");
   const [testConditions, setTestConditions] = useState("No errors\nPlots look beautiful");
-  const [progress1, setProgress1] = useState(65);
-  const [progress2, setProgress2] = useState(30);
+  const [progress1, setProgress1] = useState(0);
+  const [progress2, setProgress2] = useState(0);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [files, setFiles] = useState<string[]>([
     "data.csv",
     "labels.csv"
@@ -25,24 +27,50 @@ const Index = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
+  const simulateProgress = (projectNumber: number) => {
+    setIsProcessing(true);
+    const setProgressFn = projectNumber === 1 ? setProgress1 : setProgress2;
+    let progress = 0;
+    
+    const interval = setInterval(() => {
+      progress += Math.random() * 15;
+      if (progress >= 100) {
+        progress = 100;
+        clearInterval(interval);
+        setIsProcessing(false);
+        toast({
+          title: "Complete",
+          description: "Processing finished successfully.",
+        });
+      }
+      setProgressFn(Math.min(progress, 100));
+    }, 500);
+
+    return () => clearInterval(interval);
+  };
+
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Handle file upload
-    toast({
-      title: "Success",
-      description: "File uploaded successfully.",
-    });
+    if (e.target.files?.length) {
+      const newFiles = Array.from(e.target.files).map(file => file.name);
+      setFiles(prev => [...prev, ...newFiles]);
+      simulateProgress(activeProject);
+      toast({
+        title: "Success",
+        description: "File upload started.",
+      });
+    }
   };
 
   const handleDownload = () => {
-    // Handle download
+    simulateProgress(activeProject);
     toast({
-      title: "Success",
-      description: "Files downloaded successfully.",
+      title: "Processing",
+      description: "Preparing files for download...",
     });
   };
 
   const handleSend = () => {
-    // Handle send
+    simulateProgress(activeProject);
     toast({
       title: "Processing",
       description: "Running models...",
@@ -61,9 +89,11 @@ const Index = () => {
       <Button 
         variant="secondary"
         className={`
-          relative bg-[#0D4B6B] text-white border border-white hover:bg-[#0D5B7B] pr-12
+          relative bg-[#0D4B6B] text-white border-2 border-white hover:bg-[#0D5B7B] pr-12
           ${isActive ? 'border-b-0' : ''}
+          ${isProcessing && isActive ? 'cursor-wait' : ''}
         `}
+        disabled={isProcessing && isActive}
       >
         {`PROJECT_${number}_NAME`}
         <div className="absolute right-2 top-1/2 -translate-y-1/2">
@@ -82,11 +112,12 @@ const Index = () => {
                 cx="12"
                 cy="12"
                 r="8"
-                stroke="#4CAF50"
+                stroke={progress === 100 ? "#4CAF50" : "#FFFFFF"}
                 strokeWidth="2"
                 fill="transparent"
                 strokeDasharray={`${2 * Math.PI * 8}`}
                 strokeDashoffset={`${2 * Math.PI * 8 * (1 - progress / 100)}`}
+                className="transition-all duration-500"
               />
             </svg>
           </div>
@@ -94,6 +125,14 @@ const Index = () => {
       </Button>
     </div>
   );
+
+  // Reset progress when switching projects
+  useEffect(() => {
+    if (!isProcessing) {
+      setProgress1(0);
+      setProgress2(0);
+    }
+  }, [activeProject]);
 
   return (
     <div className="min-h-screen bg-[#0D4B6B] p-6 flex flex-col">
