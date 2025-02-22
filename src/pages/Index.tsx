@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { Upload, Download, Send } from "lucide-react";
+import { Upload, Download, Send, X } from "lucide-react";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 import { useNavigate } from 'react-router-dom';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 const Index = () => {
   const [activeProject, setActiveProject] = useState(1);
@@ -25,6 +27,17 @@ const Index = () => {
   ]);
   const { toast } = useToast();
   const navigate = useNavigate();
+  const [selectedFile, setSelectedFile] = useState<string | null>(null);
+  const [showFileContent, setShowFileContent] = useState(false);
+
+  // Mock file contents for demonstration
+  const fileContents: Record<string, string> = {
+    'data.csv': 'id,feature1,feature2\n1,0.5,0.3\n2,0.7,0.8',
+    'labels.csv': 'id,label\n1,true\n2,false',
+    'file1.py': 'import pandas as pd\nfrom sklearn.model_selection\nimport train_test_split\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.neighbors import KNeighborsClassifier\n\n# Load the dataset\ndf = pd.read_csv("file1.csv")',
+    'file2.py': 'print("Hello World")',
+    'plot.pdf': '[PDF Content]'
+  };
 
   const simulateProgress = (projectNumber: number) => {
     setIsProcessing(true);
@@ -87,6 +100,29 @@ const Index = () => {
   const handleHumanInTheLoop = () => {
     navigate('/hil');
   };
+
+  const handleFileClick = (filename: string) => {
+    setSelectedFile(filename);
+    setShowFileContent(true);
+  };
+
+  const FileComponent = ({ filename }: { filename: string }) => (
+    <TooltipProvider>
+      <Tooltip delayDuration={300}>
+        <TooltipTrigger asChild>
+          <div
+            className="text-[#0D4B6B] cursor-pointer hover:underline"
+            onClick={() => handleFileClick(filename)}
+          >
+            {filename}
+          </div>
+        </TooltipTrigger>
+        <TooltipContent className="bg-white text-black p-2 max-w-md">
+          <pre className="whitespace-pre-wrap">{fileContents[filename]}</pre>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
 
   const ProjectTab = ({ number, progress, isActive }: { number: number; progress: number; isActive: boolean }) => (
     <div 
@@ -180,7 +216,7 @@ const Index = () => {
               <h2 className="text-[#0D4B6B] font-bold mb-4">INPUT</h2>
               <div className="space-y-2 flex-grow mb-4 overflow-y-auto">
                 {files.map((file) => (
-                  <div key={file} className="text-[#0D4B6B]">{file}</div>
+                  <FileComponent key={file} filename={file} />
                 ))}
               </div>
               <Button 
@@ -204,7 +240,7 @@ const Index = () => {
           <ResizableHandle withHandle className="bg-transparent" />
 
           <ResizablePanel defaultSize={40}>
-            <div className="space-y-4 h-full">
+            <div className="space-y-4 h-full flex flex-col">
               <div className="bg-[#FFDEE2] rounded-lg p-4">
                 <h2 className="text-[#0D4B6B] font-bold mb-4">PROMPT</h2>
                 <textarea
@@ -223,7 +259,7 @@ const Index = () => {
               </div>
 
               {mode === "ADVANCED MODE" && (
-                <div className="bg-[#FFDEE2] rounded-lg p-4">
+                <div className="bg-[#FFDEE2] rounded-lg p-4 flex-grow">
                   <h2 className="text-[#0D4B6B] font-bold mb-4">TEST CONDITIONS</h2>
                   <textarea
                     value={testConditions}
@@ -249,7 +285,7 @@ const Index = () => {
               )}
 
               {mode === "DEFAULT MODE" && (
-                <div className="flex justify-center">
+                <div className="flex justify-center flex-grow items-center">
                   <div className="relative w-48 h-48">
                     <svg className="w-48 h-48 transform -rotate-90">
                       <circle
@@ -288,7 +324,7 @@ const Index = () => {
               <h2 className="text-[#0D4B6B] font-bold mb-4">OUTPUT</h2>
               <div className="space-y-2 flex-grow mb-4 overflow-y-auto">
                 {outputFiles.map((file) => (
-                  <div key={file} className="text-[#0D4B6B]">{file}</div>
+                  <FileComponent key={file} filename={file} />
                 ))}
               </div>
               <Button 
@@ -303,6 +339,26 @@ const Index = () => {
           </ResizablePanel>
         </ResizablePanelGroup>
       </div>
+
+      <Dialog open={showFileContent} onOpenChange={setShowFileContent}>
+        <DialogContent className="bg-white text-black max-w-2xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex justify-between items-center">
+              <span>{selectedFile}</span>
+              <Button
+                variant="ghost"
+                className="h-8 w-8 p-0"
+                onClick={() => setShowFileContent(false)}
+              >
+                <X className="h-4 w-4 text-[#ea384c]" />
+              </Button>
+            </DialogTitle>
+          </DialogHeader>
+          <pre className="whitespace-pre-wrap p-4 bg-white">
+            {selectedFile ? fileContents[selectedFile] : ''}
+          </pre>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
