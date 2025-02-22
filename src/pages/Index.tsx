@@ -166,6 +166,38 @@ const Index = () => {
               </div>
             )}
 
+            {/* Progress Circle (only visible in Default Mode) */}
+            {mode === "DEFAULT MODE" && (
+              <div className="flex justify-center">
+                <div className="relative w-24 h-24">
+                  <svg className="w-24 h-24 transform -rotate-90">
+                    <circle
+                      cx="48"
+                      cy="48"
+                      r="36"
+                      stroke="#0D4B6B"
+                      strokeWidth="8"
+                      fill="transparent"
+                      className="opacity-25"
+                    />
+                    <circle
+                      cx="48"
+                      cy="48"
+                      r="36"
+                      stroke="#4CAF50"
+                      strokeWidth="8"
+                      fill="transparent"
+                      strokeDasharray={`${2 * Math.PI * 36}`}
+                      strokeDashoffset={`${2 * Math.PI * 36 * (1 - progress1 / 100)}`}
+                    />
+                  </svg>
+                  <div className="absolute inset-0 flex items-center justify-center text-[#0D4B6B] font-bold text-xl">
+                    {progress1}%
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Human in the Loop Button (only visible in Advanced Mode) */}
             {mode === "ADVANCED MODE" && (
               <Button 
