@@ -5,7 +5,6 @@ import { Switch } from "@/components/ui/switch";
 import { Upload, Download, Send, X } from "lucide-react";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 import { useNavigate } from 'react-router-dom';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 const Index = () => {
@@ -29,8 +28,9 @@ const Index = () => {
   const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [showFileContent, setShowFileContent] = useState(false);
+  const [selectedInputFile, setSelectedInputFile] = useState<string | null>(null);
+  const [selectedOutputFile, setSelectedOutputFile] = useState<string | null>(null);
 
-  // Mock file contents for demonstration
   const fileContents: Record<string, string> = {
     'data.csv': 'id,feature1,feature2\n1,0.5,0.3\n2,0.7,0.8',
     'labels.csv': 'id,label\n1,true\n2,false',
@@ -106,13 +106,19 @@ const Index = () => {
     setShowFileContent(true);
   };
 
-  const FileComponent = ({ filename }: { filename: string }) => (
+  const FileComponent = ({ filename, isOutput = false }: { filename: string; isOutput?: boolean }) => (
     <TooltipProvider>
       <Tooltip delayDuration={300}>
         <TooltipTrigger asChild>
           <div
             className="text-[#0D4B6B] cursor-pointer hover:underline"
-            onClick={() => handleFileClick(filename)}
+            onClick={() => {
+              if (isOutput) {
+                setSelectedOutputFile(filename);
+              } else {
+                setSelectedInputFile(filename);
+              }
+            }}
           >
             {filename}
           </div>
@@ -122,6 +128,23 @@ const Index = () => {
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
+  );
+
+  const FileContentView = ({ filename, onClose }: { filename: string; onClose: () => void }) => (
+    <div className="relative bg-white rounded-lg p-4 h-full overflow-auto">
+      <Button
+        variant="ghost"
+        size="icon"
+        className="absolute right-2 top-2 h-6 w-6 p-0 hover:bg-transparent"
+        onClick={onClose}
+      >
+        <X className="h-4 w-4 text-red-500" />
+      </Button>
+      <h3 className="text-[#0D4B6B] font-bold mb-2">{filename}</h3>
+      <pre className="whitespace-pre-wrap text-black">
+        {fileContents[filename]}
+      </pre>
+    </div>
   );
 
   const ProjectTab = ({ number, progress, isActive }: { number: number; progress: number; isActive: boolean }) => (
@@ -214,26 +237,35 @@ const Index = () => {
           <ResizablePanel defaultSize={30}>
             <div className="bg-[#FFDEE2] rounded-lg p-4 flex flex-col h-full">
               <h2 className="text-[#0D4B6B] font-bold mb-4">INPUT</h2>
-              <div className="space-y-2 flex-grow mb-4 overflow-y-auto">
-                {files.map((file) => (
-                  <FileComponent key={file} filename={file} />
-                ))}
-              </div>
-              <Button 
-                variant="secondary" 
-                className="w-full bg-[#0D4B6B] text-white hover:bg-[#0D5B7B]"
-                onClick={() => document.getElementById('fileInput')?.click()}
-              >
-                <Upload className="mr-2 h-4 w-4" />
-                UPLOAD
-              </Button>
-              <input
-                id="fileInput"
-                type="file"
-                multiple
-                className="hidden"
-                onChange={handleFileUpload}
-              />
+              {selectedInputFile ? (
+                <FileContentView 
+                  filename={selectedInputFile}
+                  onClose={() => setSelectedInputFile(null)}
+                />
+              ) : (
+                <>
+                  <div className="space-y-2 flex-grow mb-4 overflow-y-auto">
+                    {files.map((file) => (
+                      <FileComponent key={file} filename={file} />
+                    ))}
+                  </div>
+                  <Button 
+                    variant="secondary" 
+                    className="w-full bg-[#0D4B6B] text-white hover:bg-[#0D5B7B]"
+                    onClick={() => document.getElementById('fileInput')?.click()}
+                  >
+                    <Upload className="mr-2 h-4 w-4" />
+                    UPLOAD
+                  </Button>
+                  <input
+                    id="fileInput"
+                    type="file"
+                    multiple
+                    className="hidden"
+                    onChange={handleFileUpload}
+                  />
+                </>
+              )}
             </div>
           </ResizablePanel>
 
@@ -322,19 +354,28 @@ const Index = () => {
           <ResizablePanel defaultSize={30}>
             <div className="bg-[#FFDEE2] rounded-lg p-4 flex flex-col h-full">
               <h2 className="text-[#0D4B6B] font-bold mb-4">OUTPUT</h2>
-              <div className="space-y-2 flex-grow mb-4 overflow-y-auto">
-                {outputFiles.map((file) => (
-                  <FileComponent key={file} filename={file} />
-                ))}
-              </div>
-              <Button 
-                variant="secondary" 
-                className="w-full bg-[#0D4B6B] text-white hover:bg-[#0D5B7B]"
-                onClick={handleDownload}
-              >
-                <Download className="mr-2 h-4 w-4" />
-                DOWNLOAD
-              </Button>
+              {selectedOutputFile ? (
+                <FileContentView 
+                  filename={selectedOutputFile}
+                  onClose={() => setSelectedOutputFile(null)}
+                />
+              ) : (
+                <>
+                  <div className="space-y-2 flex-grow mb-4 overflow-y-auto">
+                    {outputFiles.map((file) => (
+                      <FileComponent key={file} filename={file} isOutput />
+                    ))}
+                  </div>
+                  <Button 
+                    variant="secondary" 
+                    className="w-full bg-[#0D4B6B] text-white hover:bg-[#0D5B7B]"
+                    onClick={handleDownload}
+                  >
+                    <Download className="mr-2 h-4 w-4" />
+                    DOWNLOAD
+                  </Button>
+                </>
+              )}
             </div>
           </ResizablePanel>
         </ResizablePanelGroup>
