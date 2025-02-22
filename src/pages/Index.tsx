@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
@@ -109,16 +108,21 @@ const Index = () => {
         <div className={`w-full p-4 rounded-lg flex items-center mt-4 ${
           mode === "DEFAULT MODE" 
             ? 'bg-[#FFDEE2] border-2 border-[#0D4B6B]' 
-            : 'bg-[#0D4B6B] border-2 border-[#221F26]'
+            : 'bg-[#FFDEE2] border-2 border-[#0D4B6B]'
         }`}>
           <Switch 
             checked={mode === "ADVANCED MODE"}
             onCheckedChange={(checked) => setMode(checked ? "ADVANCED MODE" : "DEFAULT MODE")}
-            className={mode === "ADVANCED MODE" ? "bg-[#0D4B6B]" : "bg-[#FFDEE2]"}
+            className={`
+              border-2 border-[#0D4B6B] 
+              ${mode === "ADVANCED MODE" 
+                ? 'bg-[#0D4B6B] data-[state=checked]:bg-[#0D4B6B]' 
+                : 'bg-[#FFDEE2] data-[state=unchecked]:bg-[#FFDEE2]'
+              }
+              [&>span]:bg-[#221F26]
+            `}
           />
-          <span className={`ml-2 font-medium ${
-            mode === "DEFAULT MODE" ? 'text-[#0D4B6B]' : 'text-white'
-          }`}>{mode}</span>
+          <span className="ml-2 font-medium text-[#0D4B6B]">{mode}</span>
         </div>
 
         {/* Main Content */}
