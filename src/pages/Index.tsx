@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
@@ -6,6 +5,7 @@ import { Switch } from "@/components/ui/switch";
 import { Upload, Download, Send } from "lucide-react";
 
 const Index = () => {
+  const [activeProject, setActiveProject] = useState(1);
   const [mode, setMode] = useState("DEFAULT MODE");
   const [prompt, setPrompt] = useState("Fit different models to the data in file1.csv, perform cross-validation, print MSE for all models, plot the distribution of data.");
   const [testConditions, setTestConditions] = useState("No errors\nPlots look beautiful");
@@ -53,66 +53,79 @@ const Index = () => {
     });
   };
 
-  const ProjectButton = ({ name, progress }: { name: string; progress: number }) => (
-    <div className="relative">
+  const ProjectTab = ({ number, progress, isActive }: { number: number; progress: number; isActive: boolean }) => (
+    <div 
+      className={`relative cursor-pointer ${isActive ? 'z-10' : ''}`}
+      onClick={() => setActiveProject(number)}
+    >
       <Button 
         variant="secondary"
-        className="bg-[#0D4B6B] text-white border border-white hover:bg-[#0D5B7B] pr-12"
+        className={`
+          relative bg-[#0D4B6B] text-white border border-white hover:bg-[#0D5B7B] pr-12
+          ${isActive ? 'border-b-0' : ''}
+        `}
       >
-        {name}
-      </Button>
-      <div className="absolute right-2 top-1/2 -translate-y-1/2">
-        <div className="relative w-6 h-6">
-          <svg className="w-6 h-6 transform -rotate-90">
-            <circle
-              cx="12"
-              cy="12"
-              r="8"
-              stroke="#FFFFFF"
-              strokeWidth="2"
-              fill="transparent"
-              className="opacity-25"
-            />
-            <circle
-              cx="12"
-              cy="12"
-              r="8"
-              stroke="#4CAF50"
-              strokeWidth="2"
-              fill="transparent"
-              strokeDasharray={`${2 * Math.PI * 8}`}
-              strokeDashoffset={`${2 * Math.PI * 8 * (1 - progress / 100)}`}
-            />
-          </svg>
+        {`PROJECT_${number}_NAME`}
+        <div className="absolute right-2 top-1/2 -translate-y-1/2">
+          <div className="relative w-6 h-6">
+            <svg className="w-6 h-6 transform -rotate-90">
+              <circle
+                cx="12"
+                cy="12"
+                r="8"
+                stroke="#FFFFFF"
+                strokeWidth="2"
+                fill="transparent"
+                className="opacity-25"
+              />
+              <circle
+                cx="12"
+                cy="12"
+                r="8"
+                stroke="#4CAF50"
+                strokeWidth="2"
+                fill="transparent"
+                strokeDasharray={`${2 * Math.PI * 8}`}
+                strokeDashoffset={`${2 * Math.PI * 8 * (1 - progress / 100)}`}
+              />
+            </svg>
+          </div>
         </div>
-      </div>
+      </Button>
     </div>
   );
 
   return (
-    <div className="min-h-screen bg-[#0D4B6B] p-6">
-      <div className="max-w-7xl mx-auto space-y-4">
+    <div className="min-h-screen bg-[#0D4B6B] p-6 flex flex-col">
+      <div className="max-w-7xl mx-auto w-full flex-grow space-y-4">
         {/* Header */}
         <div className="flex gap-2">
-          <ProjectButton name="PROJECT_1_NAME" progress={progress1} />
-          <ProjectButton name="PROJECT_2_NAME" progress={progress2} />
+          <ProjectTab number={1} progress={progress1} isActive={activeProject === 1} />
+          <ProjectTab number={2} progress={progress2} isActive={activeProject === 2} />
         </div>
 
         {/* Mode Switch */}
-        <div className="w-full p-4 rounded-lg bg-[#FFDEE2] flex items-center">
+        <div className={`w-full p-4 rounded-lg flex items-center ${
+          mode === "DEFAULT MODE" 
+            ? 'bg-[#FFDEE2] border-2 border-[#0D4B6B]' 
+            : 'bg-[#0D4B6B] border-2 border-[#221F26]'
+        }`}>
           <Switch 
             checked={mode === "ADVANCED MODE"}
             onCheckedChange={(checked) => setMode(checked ? "ADVANCED MODE" : "DEFAULT MODE")}
+            className={mode === "ADVANCED MODE" ? "bg-[#0D4B6B]" : "bg-[#FFDEE2]"}
           />
-          <span className="ml-2 text-[#0D4B6B] font-medium">{mode}</span>
+          <span className={`ml-2 font-medium ${
+            mode === "DEFAULT MODE" ? 'text-[#0D4B6B]' : 'text-white'
+          }`}>{mode}</span>
         </div>
 
         {/* Main Content */}
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-4 flex-grow">
           {/* Input Section */}
-          <div className="bg-[#FFDEE2] rounded-lg p-4">
+          <div className="bg-[#FFDEE2] rounded-lg p-4 flex flex-col min-h-[calc(100vh-240px)]">
             <h2 className="text-[#0D4B6B] font-bold mb-4">INPUT</h2>
-            <div className="space-y-2 mb-4">
+            <div className="space-y-2 flex-grow mb-4">
               {files.map((file) => (
                 <div key={file} className="text-[#0D4B6B]">{file}</div>
               ))}
@@ -188,11 +201,11 @@ const Index = () => {
                       strokeWidth="8"
                       fill="transparent"
                       strokeDasharray={`${2 * Math.PI * 36}`}
-                      strokeDashoffset={`${2 * Math.PI * 36 * (1 - progress1 / 100)}`}
+                      strokeDashoffset={`${2 * Math.PI * 36 * (1 - (activeProject === 1 ? progress1 : progress2) / 100)}`}
                     />
                   </svg>
                   <div className="absolute inset-0 flex items-center justify-center text-[#0D4B6B] font-bold text-xl">
-                    {progress1}%
+                    {activeProject === 1 ? progress1 : progress2}%
                   </div>
                 </div>
               </div>
@@ -211,9 +224,9 @@ const Index = () => {
           </div>
 
           {/* Output Section */}
-          <div className="bg-[#FFDEE2] rounded-lg p-4">
+          <div className="bg-[#FFDEE2] rounded-lg p-4 flex flex-col min-h-[calc(100vh-240px)]">
             <h2 className="text-[#0D4B6B] font-bold mb-4">OUTPUT</h2>
-            <div className="space-y-2 mb-4">
+            <div className="space-y-2 flex-grow mb-4">
               {outputFiles.map((file) => (
                 <div key={file} className="text-[#0D4B6B]">{file}</div>
               ))}
