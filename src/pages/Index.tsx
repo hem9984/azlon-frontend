@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
@@ -8,7 +9,8 @@ const Index = () => {
   const [mode, setMode] = useState("DEFAULT MODE");
   const [prompt, setPrompt] = useState("Fit different models to the data in file1.csv, perform cross-validation, print MSE for all models, plot the distribution of data.");
   const [testConditions, setTestConditions] = useState("No errors\nPlots look beautiful");
-  const [progress, setProgress] = useState(65);
+  const [progress1, setProgress1] = useState(65);
+  const [progress2, setProgress2] = useState(30);
   const [files, setFiles] = useState<string[]>([
     "data.csv",
     "labels.csv"
@@ -51,23 +53,49 @@ const Index = () => {
     });
   };
 
+  const ProjectButton = ({ name, progress }: { name: string; progress: number }) => (
+    <div className="relative">
+      <Button 
+        variant="secondary"
+        className="bg-[#0D4B6B] text-white border border-white hover:bg-[#0D5B7B] pr-12"
+      >
+        {name}
+      </Button>
+      <div className="absolute right-2 top-1/2 -translate-y-1/2">
+        <div className="relative w-6 h-6">
+          <svg className="w-6 h-6 transform -rotate-90">
+            <circle
+              cx="12"
+              cy="12"
+              r="8"
+              stroke="#FFFFFF"
+              strokeWidth="2"
+              fill="transparent"
+              className="opacity-25"
+            />
+            <circle
+              cx="12"
+              cy="12"
+              r="8"
+              stroke="#4CAF50"
+              strokeWidth="2"
+              fill="transparent"
+              strokeDasharray={`${2 * Math.PI * 8}`}
+              strokeDashoffset={`${2 * Math.PI * 8 * (1 - progress / 100)}`}
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <div className="min-h-screen bg-[#0D4B6B] p-6">
       <div className="max-w-7xl mx-auto space-y-4">
         {/* Header */}
         <div className="flex gap-2">
-          <Button 
-            variant="secondary"
-            className="bg-[#0D4B6B] text-white border border-white hover:bg-[#0D5B7B]"
-          >
-            PROJECT_1_NAME ���
-          </Button>
-          <Button 
-            variant="secondary"
-            className="bg-[#0D4B6B] text-white border border-white hover:bg-[#0D5B7B]"
-          >
-            PROJECT_2_NAME 🟢
-          </Button>
+          <ProjectButton name="PROJECT_1_NAME" progress={progress1} />
+          <ProjectButton name="PROJECT_2_NAME" progress={progress2} />
         </div>
 
         {/* Mode Switch */}
@@ -135,45 +163,19 @@ const Index = () => {
                   onChange={(e) => setTestConditions(e.target.value)}
                   className="w-full h-32 bg-transparent text-[#0D4B6B] resize-none focus:outline-none"
                 />
-                <Button 
-                  variant="secondary" 
-                  className="w-full bg-[#F4511E] text-white hover:bg-[#E64A19]"
-                  onClick={handleHumanInTheLoop}
-                >
-                  HUMAN-IN-THE-LOOP
-                </Button>
               </div>
             )}
 
-            {/* Progress Circle */}
-            <div className="flex justify-center">
-              <div className="relative w-24 h-24">
-                <svg className="w-24 h-24 transform -rotate-90">
-                  <circle
-                    cx="48"
-                    cy="48"
-                    r="36"
-                    stroke="#0D4B6B"
-                    strokeWidth="8"
-                    fill="transparent"
-                    className="opacity-25"
-                  />
-                  <circle
-                    cx="48"
-                    cy="48"
-                    r="36"
-                    stroke="#4CAF50"
-                    strokeWidth="8"
-                    fill="transparent"
-                    strokeDasharray={`${2 * Math.PI * 36}`}
-                    strokeDashoffset={`${2 * Math.PI * 36 * (1 - progress / 100)}`}
-                  />
-                </svg>
-                <div className="absolute inset-0 flex items-center justify-center text-[#0D4B6B] font-bold text-xl">
-                  {progress}%
-                </div>
-              </div>
-            </div>
+            {/* Human in the Loop Button (only visible in Advanced Mode) */}
+            {mode === "ADVANCED MODE" && (
+              <Button 
+                variant="secondary" 
+                className="w-full bg-[#F4511E] text-white hover:bg-[#E64A19]"
+                onClick={handleHumanInTheLoop}
+              >
+                HUMAN-IN-THE-LOOP
+              </Button>
+            )}
           </div>
 
           {/* Output Section */}
