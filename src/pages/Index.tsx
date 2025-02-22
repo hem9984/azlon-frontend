@@ -3,6 +3,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Upload, Download, Send } from "lucide-react";
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 
 const Index = () => {
   const [activeProject, setActiveProject] = useState(1);
@@ -126,126 +127,139 @@ const Index = () => {
         </div>
 
         {/* Main Content */}
-        <div className="grid grid-cols-3 gap-4 flex-grow mt-4 h-full">
+        <ResizablePanelGroup 
+          direction="horizontal" 
+          className="flex-grow mt-4"
+        >
           {/* Input Section */}
-          <div className="bg-[#FFDEE2] rounded-lg p-4 flex flex-col h-full">
-            <h2 className="text-[#0D4B6B] font-bold mb-4">INPUT</h2>
-            <div className="space-y-2 flex-grow mb-4 overflow-y-auto">
-              {files.map((file) => (
-                <div key={file} className="text-[#0D4B6B]">{file}</div>
-              ))}
-            </div>
-            <Button 
-              variant="secondary" 
-              className="w-full bg-[#0D4B6B] text-white hover:bg-[#0D5B7B]"
-              onClick={() => document.getElementById('fileInput')?.click()}
-            >
-              <Upload className="mr-2 h-4 w-4" />
-              UPLOAD
-            </Button>
-            <input
-              id="fileInput"
-              type="file"
-              multiple
-              className="hidden"
-              onChange={handleFileUpload}
-            />
-          </div>
-
-          {/* Middle Section */}
-          <div className="space-y-4">
-            {/* Prompt Section */}
-            <div className="bg-[#FFDEE2] rounded-lg p-4">
-              <h2 className="text-[#0D4B6B] font-bold mb-4">PROMPT</h2>
-              <textarea
-                value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
-                className="w-full h-32 bg-transparent text-[#0D4B6B] resize-none focus:outline-none"
-              />
+          <ResizablePanel defaultSize={30}>
+            <div className="bg-[#FFDEE2] rounded-lg p-4 flex flex-col h-full">
+              <h2 className="text-[#0D4B6B] font-bold mb-4">INPUT</h2>
+              <div className="space-y-2 flex-grow mb-4 overflow-y-auto">
+                {files.map((file) => (
+                  <div key={file} className="text-[#0D4B6B]">{file}</div>
+                ))}
+              </div>
               <Button 
                 variant="secondary" 
                 className="w-full bg-[#0D4B6B] text-white hover:bg-[#0D5B7B]"
-                onClick={handleSend}
+                onClick={() => document.getElementById('fileInput')?.click()}
               >
-                <Send className="mr-2 h-4 w-4" />
-                SEND
+                <Upload className="mr-2 h-4 w-4" />
+                UPLOAD
               </Button>
+              <input
+                id="fileInput"
+                type="file"
+                multiple
+                className="hidden"
+                onChange={handleFileUpload}
+              />
             </div>
+          </ResizablePanel>
 
-            {/* Test Conditions (only visible in Advanced Mode) */}
-            {mode === "ADVANCED MODE" && (
+          <ResizableHandle withHandle />
+
+          {/* Middle Section */}
+          <ResizablePanel defaultSize={40}>
+            <div className="space-y-4 h-full">
+              {/* Prompt Section */}
               <div className="bg-[#FFDEE2] rounded-lg p-4">
-                <h2 className="text-[#0D4B6B] font-bold mb-4">TEST CONDITIONS</h2>
+                <h2 className="text-[#0D4B6B] font-bold mb-4">PROMPT</h2>
                 <textarea
-                  value={testConditions}
-                  onChange={(e) => setTestConditions(e.target.value)}
+                  value={prompt}
+                  onChange={(e) => setPrompt(e.target.value)}
                   className="w-full h-32 bg-transparent text-[#0D4B6B] resize-none focus:outline-none"
                 />
+                <Button 
+                  variant="secondary" 
+                  className="w-full bg-[#0D4B6B] text-white hover:bg-[#0D5B7B]"
+                  onClick={handleSend}
+                >
+                  <Send className="mr-2 h-4 w-4" />
+                  SEND
+                </Button>
               </div>
-            )}
 
-            {/* Progress Circle (only visible in Default Mode) */}
-            {mode === "DEFAULT MODE" && (
-              <div className="flex justify-center">
-                <div className="relative w-24 h-24">
-                  <svg className="w-24 h-24 transform -rotate-90">
-                    <circle
-                      cx="48"
-                      cy="48"
-                      r="36"
-                      stroke="#0D4B6B"
-                      strokeWidth="8"
-                      fill="transparent"
-                      className="opacity-25"
-                    />
-                    <circle
-                      cx="48"
-                      cy="48"
-                      r="36"
-                      stroke="#4CAF50"
-                      strokeWidth="8"
-                      fill="transparent"
-                      strokeDasharray={`${2 * Math.PI * 36}`}
-                      strokeDashoffset={`${2 * Math.PI * 36 * (1 - (activeProject === 1 ? progress1 : progress2) / 100)}`}
-                    />
-                  </svg>
-                  <div className="absolute inset-0 flex items-center justify-center text-[#0D4B6B] font-bold text-xl">
-                    {activeProject === 1 ? progress1 : progress2}%
+              {/* Test Conditions (only visible in Advanced Mode) */}
+              {mode === "ADVANCED MODE" && (
+                <div className="bg-[#FFDEE2] rounded-lg p-4">
+                  <h2 className="text-[#0D4B6B] font-bold mb-4">TEST CONDITIONS</h2>
+                  <textarea
+                    value={testConditions}
+                    onChange={(e) => setTestConditions(e.target.value)}
+                    className="w-full h-32 bg-transparent text-[#0D4B6B] resize-none focus:outline-none"
+                  />
+                </div>
+              )}
+
+              {/* Progress Circle (only visible in Default Mode) */}
+              {mode === "DEFAULT MODE" && (
+                <div className="flex justify-center">
+                  <div className="relative w-24 h-24">
+                    <svg className="w-24 h-24 transform -rotate-90">
+                      <circle
+                        cx="48"
+                        cy="48"
+                        r="36"
+                        stroke="#0D4B6B"
+                        strokeWidth="8"
+                        fill="transparent"
+                        className="opacity-25"
+                      />
+                      <circle
+                        cx="48"
+                        cy="48"
+                        r="36"
+                        stroke="#4CAF50"
+                        strokeWidth="8"
+                        fill="transparent"
+                        strokeDasharray={`${2 * Math.PI * 36}`}
+                        strokeDashoffset={`${2 * Math.PI * 36 * (1 - (activeProject === 1 ? progress1 : progress2) / 100)}`}
+                      />
+                    </svg>
+                    <div className="absolute inset-0 flex items-center justify-center text-[#0D4B6B] font-bold text-xl">
+                      {activeProject === 1 ? progress1 : progress2}%
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {/* Human in the Loop Button (only visible in Advanced Mode) */}
-            {mode === "ADVANCED MODE" && (
-              <Button 
-                variant="secondary" 
-                className="w-full bg-[#F4511E] text-white hover:bg-[#E64A19]"
-                onClick={handleHumanInTheLoop}
-              >
-                HUMAN-IN-THE-LOOP
-              </Button>
-            )}
-          </div>
+              {/* Human in the Loop Button (only visible in Advanced Mode) */}
+              {mode === "ADVANCED MODE" && (
+                <Button 
+                  variant="secondary" 
+                  className="w-full bg-[#F4511E] text-white hover:bg-[#E64A19]"
+                  onClick={handleHumanInTheLoop}
+                >
+                  HUMAN-IN-THE-LOOP
+                </Button>
+              )}
+            </div>
+          </ResizablePanel>
+
+          <ResizableHandle withHandle />
 
           {/* Output Section */}
-          <div className="bg-[#FFDEE2] rounded-lg p-4 flex flex-col h-full">
-            <h2 className="text-[#0D4B6B] font-bold mb-4">OUTPUT</h2>
-            <div className="space-y-2 flex-grow mb-4 overflow-y-auto">
-              {outputFiles.map((file) => (
-                <div key={file} className="text-[#0D4B6B]">{file}</div>
-              ))}
+          <ResizablePanel defaultSize={30}>
+            <div className="bg-[#FFDEE2] rounded-lg p-4 flex flex-col h-full">
+              <h2 className="text-[#0D4B6B] font-bold mb-4">OUTPUT</h2>
+              <div className="space-y-2 flex-grow mb-4 overflow-y-auto">
+                {outputFiles.map((file) => (
+                  <div key={file} className="text-[#0D4B6B]">{file}</div>
+                ))}
+              </div>
+              <Button 
+                variant="secondary" 
+                className="w-full bg-[#0D4B6B] text-white hover:bg-[#0D5B7B]"
+                onClick={handleDownload}
+              >
+                <Download className="mr-2 h-4 w-4" />
+                DOWNLOAD
+              </Button>
             </div>
-            <Button 
-              variant="secondary" 
-              className="w-full bg-[#0D4B6B] text-white hover:bg-[#0D5B7B]"
-              onClick={handleDownload}
-            >
-              <Download className="mr-2 h-4 w-4" />
-              DOWNLOAD
-            </Button>
-          </div>
-        </div>
+          </ResizablePanel>
+        </ResizablePanelGroup>
       </div>
     </div>
   );
