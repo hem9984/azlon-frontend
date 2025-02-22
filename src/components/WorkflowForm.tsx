@@ -1,9 +1,9 @@
+
 import React from 'react';
 import { Card } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { Switch } from "@/components/ui/switch";
 
 interface WorkflowFormProps {
   userPrompt: string;
@@ -18,6 +18,7 @@ interface WorkflowFormProps {
   setValidateOutputPrompt: (value: string) => void;
   onSubmit: (e: React.FormEvent) => void;
   isLoading: boolean;
+  progress: number;
 }
 
 const WorkflowForm = ({
@@ -27,84 +28,91 @@ const WorkflowForm = ({
   setTestConditions,
   advancedMode,
   setAdvancedMode,
-  generateCodePrompt,
-  setGenerateCodePrompt,
-  validateOutputPrompt,
-  setValidateOutputPrompt,
   onSubmit,
-  isLoading
+  isLoading,
+  progress
 }: WorkflowFormProps) => {
   return (
-    <Card className="p-6 card-glow">
-      <form onSubmit={onSubmit} className="space-y-6">
-        <div className="flex justify-between items-center mb-6">
-          <div className="flex items-center space-x-2">
-            <Switch
-              checked={advancedMode}
-              onCheckedChange={setAdvancedMode}
-              id="advanced-mode"
-            />
-            <Label htmlFor="advanced-mode">Advanced Mode</Label>
-          </div>
+    <form onSubmit={onSubmit} className="space-y-4">
+      <div className="mode-switch">
+        <Switch
+          checked={advancedMode}
+          onCheckedChange={setAdvancedMode}
+        />
+        <span className="ml-2">{advancedMode ? "ADVANCED MODE" : "DEFAULT MODE"}</span>
+      </div>
+
+      <div className="grid grid-cols-3 gap-4">
+        <div className="section-card">
+          <h2 className="text-lg font-semibold mb-4">PROMPT</h2>
+          <textarea
+            value={userPrompt}
+            onChange={(e) => setUserPrompt(e.target.value)}
+            className="w-full h-32 bg-transparent resize-none focus:outline-none"
+            placeholder="Enter your prompt here..."
+          />
+          <Button 
+            type="submit" 
+            className="w-full mt-4" 
+            variant="secondary"
+            disabled={isLoading}
+          >
+            SEND
+          </Button>
         </div>
 
-        <div className="space-y-4">
-          <div>
-            <Label htmlFor="user-prompt">User Prompt</Label>
-            <Textarea
-              id="user-prompt"
-              value={userPrompt}
-              onChange={(e) => setUserPrompt(e.target.value)}
-              className="h-32 mt-2 textarea-code"
-              placeholder="Write a Python script that prints 'hello world'"
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="test-conditions">Test Conditions</Label>
-            <Textarea
-              id="test-conditions"
+        {advancedMode && (
+          <div className="section-card">
+            <h2 className="text-lg font-semibold mb-4">TEST CONDITIONS</h2>
+            <textarea
               value={testConditions}
               onChange={(e) => setTestConditions(e.target.value)}
-              className="h-32 mt-2 textarea-code"
-              placeholder="The script must print exactly 'hello world' and exit with code 0."
+              className="w-full h-32 bg-transparent resize-none focus:outline-none"
+              placeholder="Enter test conditions..."
             />
+            <Button 
+              type="button"
+              className="w-full mt-4" 
+              variant="secondary"
+            >
+              HUMAN-IN-THE-LOOP
+            </Button>
           </div>
+        )}
 
-          {advancedMode && (
-            <div className="space-y-4 animate-fade-in">
-              <div>
-                <Label htmlFor="generate-code-prompt">Generate Code Prompt</Label>
-                <Textarea
-                  id="generate-code-prompt"
-                  value={generateCodePrompt}
-                  onChange={(e) => setGenerateCodePrompt(e.target.value)}
-                  className="h-48 mt-2 textarea-code"
+        <div className="section-card">
+          <h2 className="text-lg font-semibold mb-4">OUTPUT</h2>
+          {isLoading && (
+            <div className="flex justify-center items-center py-8">
+              <svg className="progress-ring">
+                <circle
+                  className="circular-progress"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                  fill="transparent"
+                  r="30"
+                  cx="48"
+                  cy="48"
+                  style={{
+                    strokeDasharray: '188.5',
+                    strokeDashoffset: `${188.5 * (1 - progress / 100)}`
+                  }}
                 />
-              </div>
-
-              <div>
-                <Label htmlFor="validate-output-prompt">Validate Output Prompt</Label>
-                <Textarea
-                  id="validate-output-prompt"
-                  value={validateOutputPrompt}
-                  onChange={(e) => setValidateOutputPrompt(e.target.value)}
-                  className="h-48 mt-2 textarea-code"
-                />
-              </div>
+                <text
+                  x="48"
+                  y="48"
+                  textAnchor="middle"
+                  dy=".3em"
+                  className="text-lg font-bold"
+                >
+                  {progress}%
+                </text>
+              </svg>
             </div>
           )}
         </div>
-
-        <Button 
-          type="submit" 
-          className="w-full"
-          disabled={isLoading}
-        >
-          {isLoading ? "Processing..." : "Run Workflow"}
-        </Button>
-      </form>
-    </Card>
+      </div>
+    </form>
   );
 };
 

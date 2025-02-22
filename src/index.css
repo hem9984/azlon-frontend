@@ -1,28 +1,29 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 263.4 70% 50.4%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
+    --background: 196 54% 20%;
+    --foreground: 0 100% 92%;
+    --card: 196 54% 20%;
+    --card-foreground: 0 100% 92%;
+    --popover: 196 54% 20%;
+    --popover-foreground: 0 100% 92%;
+    --primary: 196 54% 20%;
+    --primary-foreground: 0 100% 92%;
+    --secondary: 350 100% 88%;
+    --secondary-foreground: 196 54% 20%;
+    --muted: 196 54% 25%;
+    --muted-foreground: 0 100% 92%;
+    --accent: 350 100% 88%;
+    --accent-foreground: 196 54% 20%;
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
+    --destructive-foreground: 0 100% 92%;
+    --border: 196 54% 30%;
+    --input: 196 54% 25%;
+    --ring: 196 54% 30%;
   }
 }
 
@@ -32,18 +33,31 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
 
-.gradient-bg {
-  background: linear-gradient(to bottom right, #1a1b26, #24283b);
+.app-container {
+  @apply min-h-screen bg-secondary p-4;
 }
 
-.card-glow {
-  box-shadow: 0 0 20px rgba(139, 92, 246, 0.1);
+.project-header {
+  @apply flex gap-2 mb-4;
 }
 
-.textarea-code {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+.mode-switch {
+  @apply w-full p-4 mb-4 bg-secondary rounded-lg flex items-center;
+}
+
+.section-card {
+  @apply bg-primary rounded-lg p-4;
+}
+
+.progress-ring {
+  @apply w-24 h-24;
+}
+
+.circular-progress {
+  transition: stroke-dashoffset 0.35s;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
 }
