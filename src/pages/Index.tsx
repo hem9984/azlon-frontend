@@ -89,7 +89,7 @@ const Index = () => {
       <Button 
         variant="secondary"
         className={`
-          relative bg-[#0D4B6B] text-white border-2 border-white hover:bg-[#0D5B7B] pr-12
+          relative bg-[#0D4B6B] text-white border-2 border-white hover:bg-[#0D5B7B] pr-16
           ${isActive ? 'border-b-0' : ''}
           ${isProcessing && isActive ? 'cursor-wait' : ''}
         `}
@@ -97,31 +97,31 @@ const Index = () => {
       >
         {`PROJECT_${number}_NAME`}
         <div className="absolute right-2 top-1/2 -translate-y-1/2">
-          <div className="relative w-6 h-6">
-            <svg className="w-6 h-6 transform -rotate-90">
+          <div className="relative w-12 h-12">
+            <svg className="w-12 h-12 transform -rotate-90">
               <circle
-                cx="12"
-                cy="12"
-                r="8"
+                cx="24"
+                cy="24"
+                r="20"
                 stroke="#FFFFFF"
                 strokeWidth="2"
-                fill="transparent"
+                fill="#FA8072"
                 className="opacity-25"
               />
               <circle
-                cx="12"
-                cy="12"
-                r="8"
+                cx="24"
+                cy="24"
+                r="20"
                 stroke={progress === 100 ? "#4CAF50" : "#FFFFFF"}
                 strokeWidth="2"
                 fill="transparent"
-                strokeDasharray={`${2 * Math.PI * 8}`}
-                strokeDashoffset={`${2 * Math.PI * 8 * (1 - progress / 100)}`}
+                strokeDasharray={`${2 * Math.PI * 20}`}
+                strokeDashoffset={`${2 * Math.PI * 20 * (1 - progress / 100)}`}
                 className="transition-all duration-500"
               />
             </svg>
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-[8px] font-bold">{Math.round(progress)}%</span>
+              <span className="text-base font-bold text-white">{Math.floor(progress)}%</span>
             </div>
           </div>
         </div>
