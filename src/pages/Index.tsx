@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -7,7 +6,8 @@ import { Upload, Download, Send } from "lucide-react";
 
 const Index = () => {
   const [mode, setMode] = useState("DEFAULT MODE");
-  const [prompt, setPrompt] = useState("");
+  const [prompt, setPrompt] = useState("Fit different models to the data in file1.csv, perform cross-validation, print MSE for all models, plot the distribution of data.");
+  const [testConditions, setTestConditions] = useState("No errors\nPlots look beautiful");
   const [progress, setProgress] = useState(65);
   const [files, setFiles] = useState<string[]>([
     "data.csv",
@@ -44,6 +44,13 @@ const Index = () => {
     });
   };
 
+  const handleHumanInTheLoop = () => {
+    toast({
+      title: "Human In The Loop",
+      description: "Processing with human oversight...",
+    });
+  };
+
   return (
     <div className="min-h-screen bg-[#0D4B6B] p-6">
       <div className="max-w-7xl mx-auto space-y-4">
@@ -53,7 +60,7 @@ const Index = () => {
             variant="secondary"
             className="bg-[#0D4B6B] text-white border border-white hover:bg-[#0D5B7B]"
           >
-            PROJECT_1_NAME 🟢
+            PROJECT_1_NAME ���
           </Button>
           <Button 
             variant="secondary"
@@ -66,8 +73,8 @@ const Index = () => {
         {/* Mode Switch */}
         <div className="w-full p-4 rounded-lg bg-[#FFDEE2] flex items-center">
           <Switch 
-            checked={mode === "DEFAULT MODE"}
-            onCheckedChange={(checked) => setMode(checked ? "DEFAULT MODE" : "ADVANCED MODE")}
+            checked={mode === "ADVANCED MODE"}
+            onCheckedChange={(checked) => setMode(checked ? "ADVANCED MODE" : "DEFAULT MODE")}
           />
           <span className="ml-2 text-[#0D4B6B] font-medium">{mode}</span>
         </div>
@@ -99,25 +106,47 @@ const Index = () => {
             />
           </div>
 
-          {/* Prompt Section */}
-          <div className="bg-[#FFDEE2] rounded-lg p-4">
-            <h2 className="text-[#0D4B6B] font-bold mb-4">PROMPT</h2>
-            <textarea
-              value="Fit different models to the data in file1.csv, perform cross-validation, print MSE for all models, plot the distribution of data."
-              onChange={(e) => setPrompt(e.target.value)}
-              className="w-full h-32 bg-transparent text-[#0D4B6B] resize-none focus:outline-none"
-            />
-            <Button 
-              variant="secondary" 
-              className="w-full bg-[#0D4B6B] text-white hover:bg-[#0D5B7B]"
-              onClick={handleSend}
-            >
-              <Send className="mr-2 h-4 w-4" />
-              SEND
-            </Button>
-            
+          {/* Middle Section */}
+          <div className="space-y-4">
+            {/* Prompt Section */}
+            <div className="bg-[#FFDEE2] rounded-lg p-4">
+              <h2 className="text-[#0D4B6B] font-bold mb-4">PROMPT</h2>
+              <textarea
+                value={prompt}
+                onChange={(e) => setPrompt(e.target.value)}
+                className="w-full h-32 bg-transparent text-[#0D4B6B] resize-none focus:outline-none"
+              />
+              <Button 
+                variant="secondary" 
+                className="w-full bg-[#0D4B6B] text-white hover:bg-[#0D5B7B]"
+                onClick={handleSend}
+              >
+                <Send className="mr-2 h-4 w-4" />
+                SEND
+              </Button>
+            </div>
+
+            {/* Test Conditions (only visible in Advanced Mode) */}
+            {mode === "ADVANCED MODE" && (
+              <div className="bg-[#FFDEE2] rounded-lg p-4">
+                <h2 className="text-[#0D4B6B] font-bold mb-4">TEST CONDITIONS</h2>
+                <textarea
+                  value={testConditions}
+                  onChange={(e) => setTestConditions(e.target.value)}
+                  className="w-full h-32 bg-transparent text-[#0D4B6B] resize-none focus:outline-none"
+                />
+                <Button 
+                  variant="secondary" 
+                  className="w-full bg-[#F4511E] text-white hover:bg-[#E64A19]"
+                  onClick={handleHumanInTheLoop}
+                >
+                  HUMAN-IN-THE-LOOP
+                </Button>
+              </div>
+            )}
+
             {/* Progress Circle */}
-            <div className="flex justify-center mt-4">
+            <div className="flex justify-center">
               <div className="relative w-24 h-24">
                 <svg className="w-24 h-24 transform -rotate-90">
                   <circle
