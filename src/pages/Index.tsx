@@ -89,39 +89,39 @@ const Index = () => {
       <Button 
         variant="secondary"
         className={`
-          relative bg-[#0D4B6B] text-white border-2 border-white hover:bg-[#0D5B7B] pr-16
+          relative bg-[#0D4B6B] text-white border-2 border-white hover:bg-[#0D5B7B] pr-[4.5rem]
           ${isActive ? 'border-b-0' : ''}
           ${isProcessing && isActive ? 'cursor-wait' : ''}
         `}
         disabled={isProcessing && isActive}
       >
         {`PROJECT_${number}_NAME`}
-        <div className="absolute right-2 top-1/2 -translate-y-1/2">
-          <div className="relative w-12 h-12">
-            <svg className="w-12 h-12 transform -rotate-90">
+        <div className="absolute right-1 top-1/2 -translate-y-1/2">
+          <div className="relative w-14 h-14">
+            <svg className="w-14 h-14 transform -rotate-90">
               <circle
-                cx="24"
-                cy="24"
-                r="20"
+                cx="28"
+                cy="28"
+                r="24"
                 stroke="#FFFFFF"
                 strokeWidth="2"
                 fill="#FA8072"
-                className="opacity-25"
+                className="opacity-100"
               />
               <circle
-                cx="24"
-                cy="24"
-                r="20"
+                cx="28"
+                cy="28"
+                r="24"
                 stroke={progress === 100 ? "#4CAF50" : "#FFFFFF"}
                 strokeWidth="2"
                 fill="transparent"
-                strokeDasharray={`${2 * Math.PI * 20}`}
-                strokeDashoffset={`${2 * Math.PI * 20 * (1 - progress / 100)}`}
+                strokeDasharray={`${2 * Math.PI * 24}`}
+                strokeDashoffset={`${2 * Math.PI * 24 * (1 - progress / 100)}`}
                 className="transition-all duration-500"
               />
             </svg>
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-base font-bold text-white">{Math.floor(progress)}%</span>
+              <span className="text-lg font-bold text-white">{Math.floor(progress)}%</span>
             </div>
           </div>
         </div>
