@@ -96,7 +96,7 @@ const Index = () => {
   );
 
   return (
-    <div className="min-h-screen bg-[#7E69AB] p-6 flex flex-col">
+    <div className="min-h-screen bg-[#0D4B6B] p-6 flex flex-col">
       <div className="max-w-7xl mx-auto w-full flex flex-col flex-grow">
         {/* Header */}
         <div className="flex gap-2">
@@ -107,22 +107,22 @@ const Index = () => {
         {/* Mode Switch */}
         <div className={`w-full p-4 rounded-lg flex items-center mt-4 ${
           mode === "DEFAULT MODE" 
-            ? 'bg-[#E5DEFF] border-2 border-[#1A1F2C]' 
-            : 'bg-[#E5DEFF] border-2 border-[#1A1F2C]'
+            ? 'bg-[#FFDEE2] border-2 border-[#0D4B6B]' 
+            : 'bg-[#FFDEE2] border-2 border-[#0D4B6B]'
         }`}>
           <Switch 
             checked={mode === "ADVANCED MODE"}
             onCheckedChange={(checked) => setMode(checked ? "ADVANCED MODE" : "DEFAULT MODE")}
             className={`
-              border-2 border-[#1A1F2C] 
+              border-2 border-[#0D4B6B] 
               ${mode === "ADVANCED MODE" 
-                ? 'bg-[#7E69AB] data-[state=checked]:bg-[#7E69AB]' 
-                : 'bg-[#E5DEFF] data-[state=unchecked]:bg-[#E5DEFF]'
+                ? 'bg-[#0D4B6B] data-[state=checked]:bg-[#0D4B6B]' 
+                : 'bg-[#FFDEE2] data-[state=unchecked]:bg-[#FFDEE2]'
               }
-              [&>span]:bg-[#1A1F2C]
+              [&>span]:bg-[#221F26]
             `}
           />
-          <span className="ml-2 font-medium text-[#1A1F2C]">{mode}</span>
+          <span className="ml-2 font-medium text-[#0D4B6B]">{mode}</span>
         </div>
 
         {/* Main Content */}
@@ -132,16 +132,16 @@ const Index = () => {
         >
           {/* Input Section */}
           <ResizablePanel defaultSize={30}>
-            <div className="bg-[#E5DEFF] rounded-lg p-4 flex flex-col h-full shadow-lg">
-              <h2 className="text-[#1A1F2C] font-bold mb-4">INPUT</h2>
+            <div className="bg-[#FFDEE2] rounded-lg p-4 flex flex-col h-full">
+              <h2 className="text-[#0D4B6B] font-bold mb-4">INPUT</h2>
               <div className="space-y-2 flex-grow mb-4 overflow-y-auto">
                 {files.map((file) => (
-                  <div key={file} className="text-[#1A1F2C]">{file}</div>
+                  <div key={file} className="text-[#0D4B6B]">{file}</div>
                 ))}
               </div>
               <Button 
                 variant="secondary" 
-                className="w-full bg-[#7E69AB] text-white hover:bg-[#6E59A5]"
+                className="w-full bg-[#0D4B6B] text-white hover:bg-[#0D5B7B]"
                 onClick={() => document.getElementById('fileInput')?.click()}
               >
                 <Upload className="mr-2 h-4 w-4" />
@@ -163,16 +163,16 @@ const Index = () => {
           <ResizablePanel defaultSize={40}>
             <div className="space-y-4 h-full">
               {/* Prompt Section */}
-              <div className="bg-[#E5DEFF] rounded-lg p-4">
-                <h2 className="text-[#1A1F2C] font-bold mb-4">PROMPT</h2>
+              <div className="bg-[#FFDEE2] rounded-lg p-4">
+                <h2 className="text-[#0D4B6B] font-bold mb-4">PROMPT</h2>
                 <textarea
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
-                  className="w-full h-32 bg-transparent text-[#1A1F2C] resize-none focus:outline-none"
+                  className="w-full h-32 bg-transparent text-[#0D4B6B] resize-none focus:outline-none"
                 />
                 <Button 
                   variant="secondary" 
-                  className="w-full bg-[#7E69AB] text-white hover:bg-[#6E59A5]"
+                  className="w-full bg-[#0D4B6B] text-white hover:bg-[#0D5B7B]"
                   onClick={handleSend}
                 >
                   <Send className="mr-2 h-4 w-4" />
@@ -182,12 +182,12 @@ const Index = () => {
 
               {/* Test Conditions (only visible in Advanced Mode) */}
               {mode === "ADVANCED MODE" && (
-                <div className="bg-[#E5DEFF] rounded-lg p-4">
-                  <h2 className="text-[#1A1F2C] font-bold mb-4">TEST CONDITIONS</h2>
+                <div className="bg-[#FFDEE2] rounded-lg p-4">
+                  <h2 className="text-[#0D4B6B] font-bold mb-4">TEST CONDITIONS</h2>
                   <textarea
                     value={testConditions}
                     onChange={(e) => setTestConditions(e.target.value)}
-                    className="w-full h-32 bg-transparent text-[#1A1F2C] resize-none focus:outline-none"
+                    className="w-full h-32 bg-transparent text-[#0D4B6B] resize-none focus:outline-none"
                   />
                 </div>
               )}
@@ -241,16 +241,16 @@ const Index = () => {
 
           {/* Output Section */}
           <ResizablePanel defaultSize={30}>
-            <div className="bg-[#E5DEFF] rounded-lg p-4 flex flex-col h-full">
-              <h2 className="text-[#1A1F2C] font-bold mb-4">OUTPUT</h2>
+            <div className="bg-[#FFDEE2] rounded-lg p-4 flex flex-col h-full">
+              <h2 className="text-[#0D4B6B] font-bold mb-4">OUTPUT</h2>
               <div className="space-y-2 flex-grow mb-4 overflow-y-auto">
                 {outputFiles.map((file) => (
-                  <div key={file} className="text-[#1A1F2C]">{file}</div>
+                  <div key={file} className="text-[#0D4B6B]">{file}</div>
                 ))}
               </div>
               <Button 
                 variant="secondary" 
-                className="w-full bg-[#7E69AB] text-white hover:bg-[#6E59A5]"
+                className="w-full bg-[#0D4B6B] text-white hover:bg-[#0D5B7B]"
                 onClick={handleDownload}
               >
                 <Download className="mr-2 h-4 w-4" />
