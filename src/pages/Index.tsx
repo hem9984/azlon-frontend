@@ -237,30 +237,30 @@ const Index = () => {
               {/* Progress Circle (only visible in Default Mode) */}
               {mode === "DEFAULT MODE" && (
                 <div className="flex justify-center">
-                  <div className="relative w-24 h-24">
-                    <svg className="w-24 h-24 transform -rotate-90">
+                  <div className="relative w-32 h-32">
+                    <svg className="w-32 h-32 transform -rotate-90">
                       <circle
-                        cx="48"
-                        cy="48"
-                        r="36"
+                        cx="64"
+                        cy="64"
+                        r="56"
                         stroke="#0D4B6B"
-                        strokeWidth="8"
-                        fill="transparent"
-                        className="opacity-25"
+                        strokeWidth="4"
+                        fill="#FA8072"
+                        className="opacity-100"
                       />
                       <circle
-                        cx="48"
-                        cy="48"
-                        r="36"
+                        cx="64"
+                        cy="64"
+                        r="56"
                         stroke="#4CAF50"
-                        strokeWidth="8"
+                        strokeWidth="4"
                         fill="transparent"
-                        strokeDasharray={`${2 * Math.PI * 36}`}
-                        strokeDashoffset={`${2 * Math.PI * 36 * (1 - (activeProject === 1 ? progress1 : progress2) / 100)}`}
+                        strokeDasharray={`${2 * Math.PI * 56}`}
+                        strokeDashoffset={`${2 * Math.PI * 56 * (1 - (activeProject === 1 ? progress1 : progress2) / 100)}`}
                       />
                     </svg>
-                    <div className="absolute inset-0 flex items-center justify-center text-[#0D4B6B] font-bold text-xl">
-                      {activeProject === 1 ? progress1 : progress2}%
+                    <div className="absolute inset-0 flex items-center justify-center text-white font-bold text-3xl">
+                      {Math.floor(activeProject === 1 ? progress1 : progress2)}%
                     </div>
                   </div>
                 </div>
