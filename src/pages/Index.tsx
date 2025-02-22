@@ -50,7 +50,7 @@ const Index = () => {
   };
 
   const handleHumanInTheLoop = () => {
-    navigate('/human-in-loop');
+    navigate('/hil');
   };
 
   const ProjectTab = ({ number, progress, isActive }: { number: number; progress: number; isActive: boolean }) => (

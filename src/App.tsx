@@ -5,7 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
-import HumanInLoop from "./pages/HumanInLoop";
+import HIL from "./pages/HIL";
 
 const queryClient = new QueryClient();
 
@@ -17,7 +17,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/human-in-loop" element={<HumanInLoop />} />
+          <Route path="/hil" element={<HIL />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
