@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
@@ -97,7 +98,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-[#0D4B6B] p-6 flex flex-col">
-      <div className="max-w-7xl mx-auto w-full flex-grow space-y-4">
+      <div className="max-w-7xl mx-auto w-full flex flex-col flex-grow">
         {/* Header */}
         <div className="flex gap-2">
           <ProjectTab number={1} progress={progress1} isActive={activeProject === 1} />
@@ -105,7 +106,7 @@ const Index = () => {
         </div>
 
         {/* Mode Switch */}
-        <div className={`w-full p-4 rounded-lg flex items-center ${
+        <div className={`w-full p-4 rounded-lg flex items-center mt-4 ${
           mode === "DEFAULT MODE" 
             ? 'bg-[#FFDEE2] border-2 border-[#0D4B6B]' 
             : 'bg-[#0D4B6B] border-2 border-[#221F26]'
@@ -121,11 +122,11 @@ const Index = () => {
         </div>
 
         {/* Main Content */}
-        <div className="grid grid-cols-3 gap-4 flex-grow">
+        <div className="grid grid-cols-3 gap-4 flex-grow mt-4 h-full">
           {/* Input Section */}
-          <div className="bg-[#FFDEE2] rounded-lg p-4 flex flex-col min-h-[calc(100vh-240px)]">
+          <div className="bg-[#FFDEE2] rounded-lg p-4 flex flex-col h-full">
             <h2 className="text-[#0D4B6B] font-bold mb-4">INPUT</h2>
-            <div className="space-y-2 flex-grow mb-4">
+            <div className="space-y-2 flex-grow mb-4 overflow-y-auto">
               {files.map((file) => (
                 <div key={file} className="text-[#0D4B6B]">{file}</div>
               ))}
@@ -224,9 +225,9 @@ const Index = () => {
           </div>
 
           {/* Output Section */}
-          <div className="bg-[#FFDEE2] rounded-lg p-4 flex flex-col min-h-[calc(100vh-240px)]">
+          <div className="bg-[#FFDEE2] rounded-lg p-4 flex flex-col h-full">
             <h2 className="text-[#0D4B6B] font-bold mb-4">OUTPUT</h2>
-            <div className="space-y-2 flex-grow mb-4">
+            <div className="space-y-2 flex-grow mb-4 overflow-y-auto">
               {outputFiles.map((file) => (
                 <div key={file} className="text-[#0D4B6B]">{file}</div>
               ))}
