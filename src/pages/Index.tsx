@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
@@ -77,6 +76,14 @@ const Index = () => {
     });
   };
 
+  const handleSendTestConditions = () => {
+    simulateProgress(activeProject);
+    toast({
+      title: "Processing",
+      description: "Applying test conditions...",
+    });
+  };
+
   const handleHumanInTheLoop = () => {
     navigate('/hil');
   };
@@ -129,7 +136,6 @@ const Index = () => {
     </div>
   );
 
-  // Reset progress when switching projects
   useEffect(() => {
     if (!isProcessing) {
       setProgress1(0);
@@ -140,13 +146,11 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-[#0D4B6B] p-6 flex flex-col">
       <div className="max-w-7xl mx-auto w-full flex flex-col flex-grow">
-        {/* Header */}
         <div className="flex gap-2">
           <ProjectTab number={1} progress={progress1} isActive={activeProject === 1} />
           <ProjectTab number={2} progress={progress2} isActive={activeProject === 2} />
         </div>
 
-        {/* Mode Switch */}
         <div className={`w-full p-4 rounded-lg flex items-center mt-4 ${
           mode === "DEFAULT MODE" 
             ? 'bg-[#FFDEE2] border-2 border-[#0D4B6B]' 
@@ -167,12 +171,10 @@ const Index = () => {
           <span className="ml-2 font-medium text-[#0D4B6B]">{mode}</span>
         </div>
 
-        {/* Main Content */}
         <ResizablePanelGroup 
           direction="horizontal" 
           className="flex-grow mt-4 gap-4"
         >
-          {/* Input Section */}
           <ResizablePanel defaultSize={30}>
             <div className="bg-[#FFDEE2] rounded-lg p-4 flex flex-col h-full">
               <h2 className="text-[#0D4B6B] font-bold mb-4">INPUT</h2>
@@ -201,10 +203,8 @@ const Index = () => {
 
           <ResizableHandle withHandle className="bg-transparent" />
 
-          {/* Middle Section */}
           <ResizablePanel defaultSize={40}>
             <div className="space-y-4 h-full">
-              {/* Prompt Section */}
               <div className="bg-[#FFDEE2] rounded-lg p-4">
                 <h2 className="text-[#0D4B6B] font-bold mb-4">PROMPT</h2>
                 <textarea
@@ -222,7 +222,6 @@ const Index = () => {
                 </Button>
               </div>
 
-              {/* Test Conditions (only visible in Advanced Mode) */}
               {mode === "ADVANCED MODE" && (
                 <div className="bg-[#FFDEE2] rounded-lg p-4">
                   <h2 className="text-[#0D4B6B] font-bold mb-4">TEST CONDITIONS</h2>
@@ -231,10 +230,24 @@ const Index = () => {
                     onChange={(e) => setTestConditions(e.target.value)}
                     className="w-full h-32 bg-transparent text-[#0D4B6B] resize-none focus:outline-none"
                   />
+                  <Button 
+                    variant="secondary" 
+                    className="w-full bg-[#0D4B6B] text-white hover:bg-[#0D5B7B] mb-4"
+                    onClick={handleSendTestConditions}
+                  >
+                    <Send className="mr-2 h-4 w-4" />
+                    SEND
+                  </Button>
+                  <Button 
+                    variant="secondary" 
+                    className="w-full bg-[#F4511E] text-white hover:bg-[#E64A19]"
+                    onClick={handleHumanInTheLoop}
+                  >
+                    HUMAN-IN-THE-LOOP
+                  </Button>
                 </div>
               )}
 
-              {/* Progress Circle (only visible in Default Mode) */}
               {mode === "DEFAULT MODE" && (
                 <div className="flex justify-center">
                   <div className="relative w-48 h-48">
@@ -265,23 +278,11 @@ const Index = () => {
                   </div>
                 </div>
               )}
-
-              {/* Human in the Loop Button (only visible in Advanced Mode) */}
-              {mode === "ADVANCED MODE" && (
-                <Button 
-                  variant="secondary" 
-                  className="w-full bg-[#F4511E] text-white hover:bg-[#E64A19]"
-                  onClick={handleHumanInTheLoop}
-                >
-                  HUMAN-IN-THE-LOOP
-                </Button>
-              )}
             </div>
           </ResizablePanel>
 
           <ResizableHandle withHandle className="bg-transparent" />
 
-          {/* Output Section */}
           <ResizablePanel defaultSize={30}>
             <div className="bg-[#FFDEE2] rounded-lg p-4 flex flex-col h-full">
               <h2 className="text-[#0D4B6B] font-bold mb-4">OUTPUT</h2>
